@@ -23,7 +23,9 @@ class JolixSEOSettings
 
     public function handle_flush_rewrite()
     {
-        if (isset($_GET['flush_rewrite']) && sanitize_text_field($_GET['flush_rewrite']) === '1' && current_user_can('manage_options')) {
+        if (isset($_GET['flush_rewrite']) && sanitize_text_field(wp_unslash($_GET['flush_rewrite'])) === '1' && 
+            isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'flush_rewrite_nonce') && 
+            current_user_can('manage_options')) {
             // Add the rewrite rule
             add_rewrite_rule('^sitemap\.xml$', 'index.php?jolix_sitemap=1', 'top');
             // Flush rewrite rules
@@ -54,7 +56,7 @@ class JolixSEOSettings
         // Homepage
         echo '<url>' . "\n";
         echo '<loc>' . esc_url(home_url('/')) . '</loc>' . "\n";
-        echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+        echo '<lastmod>' . esc_html(gmdate('Y-m-d\TH:i:s+00:00')) . '</lastmod>' . "\n";
         echo '<changefreq>daily</changefreq>' . "\n";
         echo '<priority>1.0</priority>' . "\n";
         echo '</url>' . "\n";
@@ -89,7 +91,7 @@ class JolixSEOSettings
 
                 echo '<url>' . "\n";
                 echo '<loc>' . esc_url(get_permalink($post->ID)) . '</loc>' . "\n";
-                echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00', strtotime($post->post_modified)) . '</lastmod>' . "\n";
+                echo '<lastmod>' . esc_html(gmdate('Y-m-d\TH:i:s+00:00', strtotime($post->post_modified))) . '</lastmod>' . "\n";
 
                 if ($post_type === 'page') {
                     echo '<changefreq>monthly</changefreq>' . "\n";
@@ -110,18 +112,27 @@ class JolixSEOSettings
 
         $sitemap_content = ob_get_clean();
 
-        // Try to write physical sitemap file
+        // Try to write physical sitemap file using WP_Filesystem
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        
         $upload_dir = wp_upload_dir();
         $sitemap_file = $upload_dir['basedir'] . '/sitemap.xml';
 
-        if (is_writable($upload_dir['basedir'])) {
-            file_put_contents($sitemap_file, $sitemap_content);
-        }
-
-        // Also try to write to WordPress root if possible
-        $root_sitemap = ABSPATH . 'sitemap.xml';
-        if (is_writable(ABSPATH)) {
-            file_put_contents($root_sitemap, $sitemap_content);
+        // Initialize WP_Filesystem
+        $filesystem = WP_Filesystem();
+        if ($filesystem) {
+            global $wp_filesystem;
+            
+            // Try to write to uploads directory
+            if ($wp_filesystem->is_writable($upload_dir['basedir'])) {
+                $wp_filesystem->put_contents($sitemap_file, $sitemap_content, FS_CHMOD_FILE);
+            }
+            
+            // Also try to write to WordPress root if possible
+            $root_sitemap = ABSPATH . 'sitemap.xml';
+            if ($wp_filesystem->is_writable(ABSPATH)) {
+                $wp_filesystem->put_contents($root_sitemap, $sitemap_content, FS_CHMOD_FILE);
+            }
         }
     }
 

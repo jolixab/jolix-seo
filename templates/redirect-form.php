@@ -24,7 +24,7 @@ $form_action = $is_edit ? 'jolix_seo_update_redirect' : 'jolix_seo_add_redirect'
         <div class="notice notice-error is-dismissible">
             <p>
                 <?php
-                switch ($_GET['error']) {
+                switch (sanitize_text_field(wp_unslash($_GET['error']))) {
                     case 'empty_fields':
                         echo 'Please fill in all required fields.';
                         break;
@@ -226,7 +226,8 @@ jQuery(document).ready(function($) {
             source_url: sourceUrl,
             target_url: targetUrl,
             pattern_type: patternType,
-            test_url: testUrl
+            test_url: testUrl,
+            _wpnonce: '<?php echo esc_attr(wp_create_nonce('jolix_seo_test_redirect_nonce')); ?>'
         }, function(response) {
             if (response.success) {
                 var html = '<div class="notice ' + (response.data.matches ? 'notice-success' : 'notice-warning') + '">';

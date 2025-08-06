@@ -13,14 +13,14 @@ if (!defined('ABSPATH')) {
 
 <div class="wrap">
     <h1>Redirects Management 
-        <a href="<?php echo esc_url(admin_url('admin.php?page=jolix-seo-redirects&action=add')); ?>" class="page-title-action">Add New</a>
+        <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=jolix-seo-redirects&action=add'), 'redirect_admin_nonce')); ?>" class="page-title-action">Add New</a>
     </h1>
 
     <?php if (isset($_GET['success'])): ?>
         <div class="notice notice-success is-dismissible">
             <p>
                 <?php
-                switch ($_GET['success']) {
+                switch (sanitize_text_field(wp_unslash($_GET['success']))) {
                     case 'added':
                         echo 'Redirect added successfully.';
                         break;
@@ -40,7 +40,7 @@ if (!defined('ABSPATH')) {
         <div class="notice notice-error is-dismissible">
             <p>
                 <?php
-                switch ($_GET['error']) {
+                switch (sanitize_text_field(wp_unslash($_GET['error']))) {
                     case 'empty_fields':
                         echo 'Please fill in all required fields.';
                         break;
@@ -85,7 +85,7 @@ if (!defined('ABSPATH')) {
             <?php if (empty($redirects)): ?>
                 <tr>
                     <td colspan="9" style="text-align: center; padding: 20px;">
-                        No redirects found. <a href="<?php echo esc_url(admin_url('admin.php?page=jolix-seo-redirects&action=add')); ?>">Add your first redirect</a>
+                        No redirects found. <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=jolix-seo-redirects&action=add'), 'redirect_admin_nonce')); ?>">Add your first redirect</a>
                     </td>
                 </tr>
             <?php else: ?>
@@ -140,7 +140,7 @@ if (!defined('ABSPATH')) {
                             <?php echo esc_html(mysql2date('Y/m/d', $redirect->created_at)); ?>
                         </td>
                         <td>
-                            <a href="<?php echo esc_url(admin_url('admin.php?page=jolix-seo-redirects&action=edit&id=' . $redirect->id)); ?>" class="button button-small">Edit</a>
+                            <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=jolix-seo-redirects&action=edit&id=' . $redirect->id), 'redirect_admin_nonce')); ?>" class="button button-small">Edit</a>
                             <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin-post.php?action=jolix_seo_delete_redirect&id=' . $redirect->id), 'jolix_seo_redirect_nonce')); ?>" 
                                class="button button-small button-link-delete" 
                                onclick="return confirm('Are you sure you want to delete this redirect?')">Delete</a>

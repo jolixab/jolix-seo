@@ -42,7 +42,7 @@ class JolixSEOSitemap
 
         // Also check for direct URL patterns
         if (isset($_SERVER['REQUEST_URI'])) {
-            $request_uri = sanitize_text_field($_SERVER['REQUEST_URI']);
+            $request_uri = sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI']));
 
             // Handle different possible sitemap URLs
             if (in_array($request_uri, array('/sitemap.xml', '/mwp/sitemap.xml')) && get_option('jolix_seo_enable_sitemap', 1)) {
@@ -78,7 +78,7 @@ class JolixSEOSitemap
         // Homepage
         echo '<url>' . "\n";
         echo '<loc>' . esc_url(home_url('/')) . '</loc>' . "\n";
-        echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00') . '</lastmod>' . "\n";
+        echo '<lastmod>' . esc_html(gmdate('Y-m-d\TH:i:s+00:00')) . '</lastmod>' . "\n";
         echo '<changefreq>daily</changefreq>' . "\n";
         echo '<priority>1.0</priority>' . "\n";
         echo '</url>' . "\n";
@@ -114,7 +114,7 @@ class JolixSEOSitemap
 
                 echo '<url>' . "\n";
                 echo '<loc>' . esc_url(get_permalink($post->ID)) . '</loc>' . "\n";
-                echo '<lastmod>' . date('Y-m-d\TH:i:s+00:00', strtotime($post->post_modified)) . '</lastmod>' . "\n";
+                echo '<lastmod>' . esc_html(gmdate('Y-m-d\TH:i:s+00:00', strtotime($post->post_modified))) . '</lastmod>' . "\n";
 
                 // Set priority and change frequency based on post type
                 if ($post_type === 'page') {

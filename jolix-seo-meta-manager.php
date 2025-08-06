@@ -56,8 +56,8 @@ add_action('plugins_loaded', 'jolix_seo_init');
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'jolix_seo_plugin_action_links');
 
 function jolix_seo_plugin_action_links($links) {
-    $settings_link = '<a href="' . admin_url('admin.php?page=jolix-seo-settings') . '">' . __('Settings') . '</a>';
-    $redirects_link = '<a href="' . admin_url('tools.php?page=jolix-seo-redirects') . '">' . __('Redirects') . '</a>';
+    $settings_link = '<a href="' . admin_url('admin.php?page=jolix-seo-settings') . '">' . __('Settings', 'jolix-seo-meta-manager') . '</a>';
+    $redirects_link = '<a href="' . admin_url('tools.php?page=jolix-seo-redirects') . '">' . __('Redirects', 'jolix-seo-meta-manager') . '</a>';
     
     array_unshift($links, $settings_link, $redirects_link);
     

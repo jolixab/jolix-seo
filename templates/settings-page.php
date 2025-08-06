@@ -85,7 +85,7 @@ if (!defined('ABSPATH')) {
                     </label>
                     <p class="description">
                         <a href="<?php echo esc_url(home_url('/sitemap.xml')); ?>" target="_blank" class="button button-secondary">View Sitemap</a>
-                        <a href="<?php echo esc_url(admin_url('options-general.php?page=jolix-seo-settings&flush_rewrite=1')); ?>" class="button button-secondary">Refresh Sitemap URL</a>
+                        <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=jolix-seo-settings&flush_rewrite=1'), 'flush_rewrite_nonce')); ?>" class="button button-secondary">Refresh Sitemap URL</a>
                         <a href="<?php echo esc_url(wp_upload_dir()['baseurl'] . '/sitemap.xml'); ?>" target="_blank" class="button button-secondary">View Backup Sitemap</a>
                     </p>
                     <?php if (get_option('jolix_seo_enable_sitemap', 1)): ?>
@@ -128,7 +128,7 @@ if (!defined('ABSPATH')) {
                     foreach ($public_post_types as $post_type) {
                         $checked = in_array($post_type->name, $selected_post_types) ? 'checked' : '';
                         echo '<label style="margin-right: 15px; display: inline-block;">';
-                        echo '<input type="checkbox" name="jolix_seo_sitemap_post_types[]" value="' . esc_attr($post_type->name) . '" ' . $checked . '> ';
+                        echo '<input type="checkbox" name="jolix_seo_sitemap_post_types[]" value="' . esc_attr($post_type->name) . '" ' . esc_attr($checked) . '> ';
                         echo esc_html($post_type->labels->name);
                         echo '</label>';
                     }
@@ -148,7 +148,7 @@ if (!defined('ABSPATH')) {
             <a href="<?php echo esc_url(admin_url('tools.php?page=jolix-seo-redirects')); ?>" class="button button-primary">
                 Manage Redirects
             </a>
-            <a href="<?php echo esc_url(admin_url('tools.php?page=jolix-seo-redirects&action=add')); ?>" class="button button-secondary">
+            <a href="<?php echo esc_url(wp_nonce_url(admin_url('tools.php?page=jolix-seo-redirects&action=add'), 'redirect_admin_nonce')); ?>" class="button button-secondary">
                 Add New Redirect
             </a>
         </p>

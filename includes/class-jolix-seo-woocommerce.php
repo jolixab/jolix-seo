@@ -60,6 +60,21 @@ class JolixSEOWooCommerce {
     }
     
     public function save_woocommerce_meta_fields($post_id) {
+        // Check if user has permission to edit this post
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+        
+        // Check if this is an autosave
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+        
+        // WooCommerce handles its own nonce verification, but we add extra security
+        if (!isset($_POST['woocommerce_meta_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['woocommerce_meta_nonce'])), 'woocommerce_save_data')) {
+            return;
+        }
+        
         if (isset($_POST['_seo_product_title'])) {
             update_post_meta($post_id, '_seo_product_title', sanitize_text_field(wp_unslash($_POST['_seo_product_title'])));
         }

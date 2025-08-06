@@ -68,7 +68,7 @@ class JolixSEORedirects
             return;
         }
 
-        $requested_url = $_SERVER['REQUEST_URI'];
+        $requested_url = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '';
         $redirect = $this->find_matching_redirect($requested_url);
 
         if ($redirect) {
@@ -88,7 +88,7 @@ class JolixSEORedirects
         global $wpdb;
 
         // Get all active redirects ordered by priority then pattern specificity
-        $redirects = $wpdb->get_results($wpdb->prepare(
+        $redirects = $wpdb->get_results(
             "SELECT * FROM {$this->table_name} 
              WHERE is_active = 1 
              ORDER BY 
@@ -105,7 +105,7 @@ class JolixSEORedirects
                     ELSE 4
                 END,
                 LENGTH(source_url) DESC"
-        ));
+        );
 
         foreach ($redirects as $redirect) {
             if ($this->url_matches_pattern($requested_url, $redirect->source_url, $redirect->pattern_type)) {
@@ -195,7 +195,7 @@ class JolixSEORedirects
         }
 
         // Ensure absolute URL
-        if (!parse_url($target, PHP_URL_HOST)) {
+        if (!wp_parse_url($target, PHP_URL_HOST)) {
             $target = home_url($target);
         }
 
@@ -255,7 +255,14 @@ class JolixSEORedirects
      */
     public function redirects_page()
     {
-        $action = isset($_GET['action']) ? sanitize_text_field($_GET['action']) : 'list';
+        // Verify nonce for admin page actions
+        if (isset($_GET['action']) && $_GET['action'] !== 'list') {
+            if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'redirect_admin_nonce')) {
+                wp_die('Security verification failed.');
+            }
+        }
+        
+        $action = isset($_GET['action']) ? sanitize_text_field(wp_unslash($_GET['action'])) : 'list';
         
         switch ($action) {
             case 'add':
@@ -297,7 +304,12 @@ class JolixSEORedirects
     {
         global $wpdb;
         
-        $redirect_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        // Verify nonce for edit action
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'redirect_admin_nonce')) {
+            wp_die('Security verification failed.');
+        }
+        
+        $redirect_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         $redirect = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$this->table_name} WHERE id = %d",
             $redirect_id
@@ -321,11 +333,11 @@ class JolixSEORedirects
 
         check_admin_referer('jolix_seo_redirect_nonce');
 
-        $source_url = sanitize_text_field($_POST['source_url']);
-        $target_url = sanitize_text_field($_POST['target_url']);
-        $redirect_type = intval($_POST['redirect_type']);
-        $pattern_type = sanitize_text_field($_POST['pattern_type']);
-        $priority = sanitize_text_field($_POST['priority']);
+        $source_url = isset($_POST['source_url']) ? sanitize_text_field(wp_unslash($_POST['source_url'])) : '';
+        $target_url = isset($_POST['target_url']) ? sanitize_text_field(wp_unslash($_POST['target_url'])) : '';
+        $redirect_type = isset($_POST['redirect_type']) ? intval($_POST['redirect_type']) : 301;
+        $pattern_type = isset($_POST['pattern_type']) ? sanitize_text_field(wp_unslash($_POST['pattern_type'])) : 'exact';
+        $priority = isset($_POST['priority']) ? sanitize_text_field(wp_unslash($_POST['priority'])) : 'normal';
         $is_active = isset($_POST['is_active']) ? 1 : 0;
 
         if (empty($source_url) || empty($target_url)) {
@@ -365,7 +377,12 @@ class JolixSEORedirects
             wp_die('Permission denied');
         }
 
-        $redirect_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        // Verify nonce for delete action
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'] ?? '')), 'jolix_seo_redirect_nonce')) {
+            wp_die('Security verification failed.');
+        }
+
+        $redirect_id = isset($_GET['id']) ? intval(wp_unslash($_GET['id'])) : 0;
         
         if (!$redirect_id) {
             wp_redirect(admin_url('admin.php?page=jolix-seo-redirects&error=invalid_id'));
@@ -399,12 +416,12 @@ class JolixSEORedirects
 
         check_admin_referer('jolix_seo_redirect_nonce');
 
-        $redirect_id = intval($_POST['redirect_id']);
-        $source_url = sanitize_text_field($_POST['source_url']);
-        $target_url = sanitize_text_field($_POST['target_url']);
-        $redirect_type = intval($_POST['redirect_type']);
-        $pattern_type = sanitize_text_field($_POST['pattern_type']);
-        $priority = sanitize_text_field($_POST['priority']);
+        $redirect_id = isset($_POST['redirect_id']) ? intval($_POST['redirect_id']) : 0;
+        $source_url = isset($_POST['source_url']) ? sanitize_text_field(wp_unslash($_POST['source_url'])) : '';
+        $target_url = isset($_POST['target_url']) ? sanitize_text_field(wp_unslash($_POST['target_url'])) : '';
+        $redirect_type = isset($_POST['redirect_type']) ? intval($_POST['redirect_type']) : 301;
+        $pattern_type = isset($_POST['pattern_type']) ? sanitize_text_field(wp_unslash($_POST['pattern_type'])) : 'exact';
+        $priority = isset($_POST['priority']) ? sanitize_text_field(wp_unslash($_POST['priority'])) : 'normal';
         $is_active = isset($_POST['is_active']) ? 1 : 0;
 
         if (empty($source_url) || empty($target_url) || !$redirect_id) {
@@ -442,14 +459,19 @@ class JolixSEORedirects
      */
     public function ajax_test_redirect()
     {
+        // Verify nonce for AJAX request
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'] ?? '')), 'jolix_seo_test_redirect_nonce')) {
+            wp_die('Security check failed');
+        }
+        
         if (!current_user_can('manage_options')) {
             wp_die('Permission denied');
         }
 
-        $source_url = sanitize_text_field($_POST['source_url']);
-        $target_url = sanitize_text_field($_POST['target_url']);
-        $pattern_type = sanitize_text_field($_POST['pattern_type']);
-        $test_url = sanitize_text_field($_POST['test_url']);
+        $source_url = isset($_POST['source_url']) ? sanitize_text_field(wp_unslash($_POST['source_url'])) : '';
+        $target_url = isset($_POST['target_url']) ? sanitize_text_field(wp_unslash($_POST['target_url'])) : '';
+        $pattern_type = isset($_POST['pattern_type']) ? sanitize_text_field(wp_unslash($_POST['pattern_type'])) : 'exact';
+        $test_url = isset($_POST['test_url']) ? sanitize_text_field(wp_unslash($_POST['test_url'])) : '';
 
         $matches = $this->url_matches_pattern($test_url, $source_url, $pattern_type);
         
