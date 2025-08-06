@@ -141,7 +141,27 @@ if (!defined('ABSPATH')) {
         <?php submit_button(); ?>
     </form>
 
-    <div style="margin-top: 30px; padding: 15px; background: #f9f9f9; border-left: 4px solid #0073aa;">
+    <div style="margin-top: 30px; padding: 15px; background: #e8f4f8; border-left: 4px solid #0073aa;">
+        <h3>SEO Redirects Management</h3>
+        <p>Manage 301/302 redirects with advanced pattern matching support.</p>
+        <p>
+            <a href="<?php echo esc_url(admin_url('tools.php?page=jolix-seo-redirects')); ?>" class="button button-primary">
+                Manage Redirects
+            </a>
+            <a href="<?php echo esc_url(admin_url('tools.php?page=jolix-seo-redirects&action=add')); ?>" class="button button-secondary">
+                Add New Redirect
+            </a>
+        </p>
+        <ul>
+            <li><strong>Exact Matches:</strong> /old-page redirects to /new-page</li>
+            <li><strong>Wildcard Patterns:</strong> /blog/* redirects to /news/* (supports * and ? wildcards)</li>
+            <li><strong>Regular Expressions:</strong> Advanced pattern matching with capture groups</li>
+            <li><strong>Priority System:</strong> High/Normal/Low priority with intelligent pattern ordering</li>
+            <li><strong>Hit Tracking:</strong> Monitor redirect usage and performance</li>
+        </ul>
+    </div>
+
+    <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 4px solid #0073aa;">
         <h3>How it works:</h3>
         <ul>
             <li><strong>Suffixes are applied globally</strong> to all posts and pages when rendering meta tags</li>

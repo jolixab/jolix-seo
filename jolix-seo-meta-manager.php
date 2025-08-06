@@ -39,6 +39,9 @@ if (!class_exists('JolixSEOSitemap')) {
 if (!class_exists('JolixSEOWooCommerce')) {
     require_once JOLIX_SEO_PLUGIN_DIR . 'includes/class-jolix-seo-woocommerce.php';
 }
+if (!class_exists('JolixSEORedirects')) {
+    require_once JOLIX_SEO_PLUGIN_DIR . 'includes/class-jolix-seo-redirects.php';
+}
 
 // Initialize the plugin
 function jolix_seo_init() {
@@ -49,10 +52,28 @@ function jolix_seo_init() {
 }
 add_action('plugins_loaded', 'jolix_seo_init');
 
+// Add plugin action links
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'jolix_seo_plugin_action_links');
+
+function jolix_seo_plugin_action_links($links) {
+    $settings_link = '<a href="' . admin_url('admin.php?page=jolix-seo-settings') . '">' . __('Settings') . '</a>';
+    $redirects_link = '<a href="' . admin_url('tools.php?page=jolix-seo-redirects') . '">' . __('Redirects') . '</a>';
+    
+    array_unshift($links, $settings_link, $redirects_link);
+    
+    return $links;
+}
+
 // Activation hook
 register_activation_hook(__FILE__, 'jolix_seo_activation');
 
 function jolix_seo_activation() {
+    // Create redirects table
+    if (class_exists('JolixSEORedirects')) {
+        $redirects = new JolixSEORedirects();
+        $redirects->create_table();
+    }
+    
     // Flush rewrite rules to ensure sitemap works
     flush_rewrite_rules();
     

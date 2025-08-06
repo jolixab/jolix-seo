@@ -16,6 +16,7 @@ class JolixSEOMetaManager {
     private $settings;
     private $sitemap;
     private $woocommerce;
+    private $redirects;
     
     public function __construct() {
         add_action('init', array($this, 'init'));
@@ -27,6 +28,7 @@ class JolixSEOMetaManager {
         $this->settings = new JolixSEOSettings();
         $this->sitemap = new JolixSEOSitemap();
         $this->woocommerce = new JolixSEOWooCommerce();
+        $this->redirects = new JolixSEORedirects();
         
         // Add meta tags to head
         add_action('wp_head', array($this, 'add_meta_tags'));
