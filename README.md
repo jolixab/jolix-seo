@@ -43,10 +43,27 @@ A simple and effective WordPress SEO plugin to manage meta titles, descriptions,
 
 ```
 jolix-seo/
-├── jolix-seo.php  # Main plugin file
-├── readme.txt                  # WordPress.org readme
-├── README.md                   # GitHub readme
-└── index.php                   # Security file
+├── jolix-seo.php                        # Main plugin bootstrap
+├── includes/                            # Core class files
+│   ├── class-jolix-seo.php             # Core plugin class
+│   ├── class-jolix-seo-meta-box.php    # Admin meta box functionality
+│   ├── class-jolix-seo-settings.php    # Settings page and management
+│   ├── class-jolix-seo-sitemap.php     # XML sitemap functionality
+│   ├── class-jolix-seo-woocommerce.php # WooCommerce integration
+│   └── class-jolix-seo-redirects.php   # Advanced redirect management
+├── templates/                           # Admin UI templates
+│   ├── meta-box.php                     # Post/page meta box template
+│   ├── settings-page.php               # Settings page template
+│   ├── redirects-list.php              # Redirects management interface
+│   └── redirect-form.php               # Redirect add/edit form
+├── languages/                           # Translation files
+│   ├── jolix-seo.pot                   # Translation template
+│   └── index.php                       # Security file
+├── build.sh                            # Build script for distribution
+├── readme.txt                          # WordPress.org readme
+├── README.md                           # GitHub readme
+├── index.php                           # Security file
+└── uninstall.php                       # Cleanup on uninstall
 ```
 
 ## Usage
@@ -104,6 +121,19 @@ The plugin generates these meta tags:
 
 - WordPress 5.0 or higher
 - PHP 7.4 or higher
+
+## Translation
+
+The plugin is translation-ready and includes:
+
+- POT file for creating translations (`languages/jolix-seo.pot`)
+- Text domain: `jolix-seo`
+- All user-facing strings are wrapped with translation functions
+
+To create a translation:
+1. Use the POT file in the `languages/` directory
+2. Create PO/MO files for your language (e.g., `jolix-seo-sv_SE.po`)
+3. Place them in the `languages/` directory
 
 ## Development
 

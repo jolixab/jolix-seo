@@ -84,13 +84,13 @@ if (!defined('ABSPATH')) {
                         Generate XML sitemap at <code><?php echo esc_url(home_url('/sitemap.xml')); ?></code>
                     </label>
                     <p class="description">
-                        <a href="<?php echo esc_url(home_url('/sitemap.xml')); ?>" target="_blank" class="button button-secondary">View Sitemap</a>
-                        <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=jolix-seo-settings&flush_rewrite=1'), 'flush_rewrite_nonce')); ?>" class="button button-secondary">Refresh Sitemap URL</a>
-                        <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=jolix-seo-settings&generate_physical_sitemap=1'), 'generate_physical_sitemap_nonce')); ?>" class="button button-primary">Generate Physical Sitemap</a>
-                        <a href="<?php echo esc_url(wp_upload_dir()['baseurl'] . '/sitemap.xml'); ?>" target="_blank" class="button button-secondary">View Backup Sitemap</a>
+                        <a href="<?php echo esc_url(home_url('/sitemap.xml')); ?>" target="_blank" class="button button-secondary"><?php _e('View Sitemap', 'jolix-seo'); ?></a>
+                        <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=jolix-seo-settings&flush_rewrite=1'), 'flush_rewrite_nonce')); ?>" class="button button-secondary"><?php _e('Refresh Sitemap URL', 'jolix-seo'); ?></a>
+                        <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=jolix-seo-settings&generate_physical_sitemap=1'), 'generate_physical_sitemap_nonce')); ?>" class="button button-primary"><?php _e('Generate Physical Sitemap', 'jolix-seo'); ?></a>
+                        <a href="<?php echo esc_url(wp_upload_dir()['baseurl'] . '/sitemap.xml'); ?>" target="_blank" class="button button-secondary"><?php _e('View Backup Sitemap', 'jolix-seo'); ?></a>
                     </p>
                     <p class="description" style="margin-top: 5px; color: #666; font-style: italic;">
-                        If Google Search Console shows "Hämtning misslyckades" (fetch failed), try generating a physical sitemap file.
+                        <?php _e('Generate a physical sitemap file for better search engine compatibility.', 'jolix-seo'); ?>
                     </p>
                     <?php if (get_option('jolix_seo_enable_sitemap', 1)): ?>
                         <p class="description">

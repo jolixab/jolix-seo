@@ -45,6 +45,9 @@ if (!class_exists('JolixSEORedirects')) {
 
 // Initialize the plugin
 function jolix_seo_init() {
+    // Load text domain for translations
+    load_plugin_textdomain('jolix-seo', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+    
     if (!class_exists('JolixSEO')) {
         return;
     }

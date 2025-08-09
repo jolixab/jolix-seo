@@ -1,0 +1,115 @@
+# Copyright (C) 2025 Jolix AB
+# This file is distributed under the same license as the Jolix SEO plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Jolix SEO 1.1.0\n"
+"Report-Msgid-Bugs-To: https://jolix.se\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-08-09T12:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: wp-cli/2.5.0\n"
+"X-Domain: jolix-seo\n"
+
+#: jolix-seo.php:62
+msgid "Settings"
+msgstr ""
+
+#: jolix-seo.php:63
+msgid "Redirects"
+msgstr ""
+
+#: templates/settings-page.php:87
+msgid "View Sitemap"
+msgstr ""
+
+#: templates/settings-page.php:88
+msgid "Refresh Sitemap URL"
+msgstr ""
+
+#: templates/settings-page.php:89
+msgid "Generate Physical Sitemap"
+msgstr ""
+
+#: templates/settings-page.php:90
+msgid "View Backup Sitemap"
+msgstr ""
+
+#: templates/settings-page.php:93
+msgid "Generate a physical sitemap file for better search engine compatibility."
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Jolix SEO"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Meta Title"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Meta Description"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Social Media Image"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Use Featured Image"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Use Custom Image"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Select Image"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Remove Image"
+msgstr ""
+
+#: includes/class-jolix-seo-meta-box.php
+msgid "Exclude from Sitemap"
+msgstr ""
+
+#: includes/class-jolix-seo-settings.php
+msgid "Jolix SEO Settings"
+msgstr ""
+
+#: includes/class-jolix-seo-settings.php
+msgid "Jolix SEO"
+msgstr ""
+
+#: includes/class-jolix-seo-redirects.php
+msgid "Redirects"
+msgstr ""
+
+#: includes/class-jolix-seo-redirects.php
+msgid "Add New Redirect"
+msgstr ""
+
+#: includes/class-jolix-seo-redirects.php
+msgid "Edit Redirect"
+msgstr ""
+
+#: includes/class-jolix-seo-redirects.php
+msgid "Delete"
+msgstr ""
+
+#: includes/class-jolix-seo-redirects.php
+msgid "High"
+msgstr ""
+
+#: includes/class-jolix-seo-redirects.php
+msgid "Normal"
+msgstr ""
+
+#: includes/class-jolix-seo-redirects.php
+msgid "Low"
+msgstr ""
