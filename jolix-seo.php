@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Plugin Name: Jolix SEO
- * Plugin URI: https://jolix.se/en/jolix-seo
+ * Plugin URI: https://jolix.se/en/jolix-seo-wp-plugin/
  * Description: A simple SEO plugin to manage meta titles, descriptions, Open Graph fields, XML sitemaps, and redirects.
  * Version: 1.1.0
  * Author: Fredrik Gustavsson, Jolix AB
@@ -44,10 +45,11 @@ if (!class_exists('JolixSEORedirects')) {
 }
 
 // Initialize the plugin
-function jolix_seo_init() {
+function jolix_seo_init()
+{
     // Load text domain for translations
     load_plugin_textdomain('jolix-seo', false, dirname(plugin_basename(__FILE__)) . '/languages/');
-    
+
     if (!class_exists('JolixSEO')) {
         return;
     }
@@ -58,28 +60,30 @@ add_action('plugins_loaded', 'jolix_seo_init');
 // Add plugin action links
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'jolix_seo_plugin_action_links');
 
-function jolix_seo_plugin_action_links($links) {
+function jolix_seo_plugin_action_links($links)
+{
     $settings_link = '<a href="' . admin_url('admin.php?page=jolix-seo-settings') . '">' . __('Settings', 'jolix-seo') . '</a>';
     $redirects_link = '<a href="' . admin_url('tools.php?page=jolix-seo-redirects') . '">' . __('Redirects', 'jolix-seo') . '</a>';
-    
+
     array_unshift($links, $settings_link, $redirects_link);
-    
+
     return $links;
 }
 
 // Activation hook
 register_activation_hook(__FILE__, 'jolix_seo_activation');
 
-function jolix_seo_activation() {
+function jolix_seo_activation()
+{
     // Create redirects table
     if (class_exists('JolixSEORedirects')) {
         $redirects = new JolixSEORedirects();
         $redirects->create_table();
     }
-    
+
     // Flush rewrite rules to ensure sitemap works
     flush_rewrite_rules();
-    
+
     // Set default options
     add_option('jolix_seo_enable_sitemap', 1);
     add_option('jolix_seo_sitemap_post_types', array('post', 'page'));
@@ -88,7 +92,8 @@ function jolix_seo_activation() {
 // Deactivation hook
 register_deactivation_hook(__FILE__, 'jolix_seo_deactivation');
 
-function jolix_seo_deactivation() {
+function jolix_seo_deactivation()
+{
     // Flush rewrite rules
     flush_rewrite_rules();
 }

@@ -5,6 +5,7 @@ A simple and effective WordPress SEO plugin to manage meta titles, descriptions,
 ## Features
 
 ### SEO Meta Management
+
 - **Simple Interface** - Clean, intuitive meta box on post/page editor
 - **Combined Fields** - One title field for both SEO and social media (no duplicate work)
 - **Smart Image Handling** - Use featured image or custom image for Open Graph
@@ -14,12 +15,14 @@ A simple and effective WordPress SEO plugin to manage meta titles, descriptions,
 - **Complete Coverage** - Outputs SEO meta tags, Open Graph, and Twitter Cards
 
 ### XML Sitemap
+
 - **Automatic Generation** - Dynamic XML sitemap at `/sitemap.xml`
 - **Post Type Selection** - Choose which content types to include
 - **Individual Control** - Exclude specific posts/pages from sitemap
 - **Backup Sitemap** - Physical backup file generation for reliability
 
 ### Advanced Redirect Management
+
 - **Pattern Types** - Exact matches, wildcard patterns (* and ?), and full regex support
 - **Priority System** - High/Normal/Low priority levels with intelligent ordering
 - **Multiple Redirect Types** - Support for 301, 302, 307, and 308 redirects
@@ -28,6 +31,7 @@ A simple and effective WordPress SEO plugin to manage meta titles, descriptions,
 - **Live Testing** - Built-in pattern testing tool in admin interface
 
 ### WooCommerce Integration
+
 - **Product SEO** - Enhanced meta fields for WooCommerce products
 - **Product Images** - Smart handling of product gallery images for social sharing
 
@@ -131,6 +135,7 @@ The plugin is translation-ready and includes:
 - All user-facing strings are wrapped with translation functions
 
 To create a translation:
+
 1. Use the POT file in the `languages/` directory
 2. Create PO/MO files for your language (e.g., `jolix-seo-sv_SE.po`)
 3. Place them in the `languages/` directory
@@ -146,7 +151,8 @@ This plugin follows WordPress coding standards and best practices:
 
 ## Support
 
-For support, feature requests, or bug reports, please create an issue in this repository.
+For support, feature requests, or bug reports, please create an issue in this repository. The plugin and information is
+available at <https://jolix.se/en/jolix-seo-wp-plugin/>
 
 ## License
 
