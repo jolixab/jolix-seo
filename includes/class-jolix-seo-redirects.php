@@ -3,7 +3,7 @@
 /**
  * Redirect management functionality
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access

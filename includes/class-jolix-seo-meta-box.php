@@ -3,7 +3,7 @@
 /**
  * Meta Box functionality
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
@@ -32,8 +32,8 @@ class JolixSEOMetaBox
 
         foreach ($post_types as $post_type) {
             add_meta_box(
-                'jolix-seo-meta-manager',
-                'Jolix SEO Meta Manager',
+                'jolix-seo',
+                'Jolix SEO',
                 array($this, 'meta_box_callback'),
                 $post_type,
                 'normal',

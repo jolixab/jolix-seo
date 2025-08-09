@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Jolix SEO Meta Manager
- * Plugin URI: https://jolix.se/en/jolix-seo-meta-manager
- * Description: A simple SEO plugin to manage meta titles, descriptions, and Open Graph fields.
- * Version: 1.0.0
+ * Plugin Name: Jolix SEO
+ * Plugin URI: https://jolix.se/en/jolix-seo
+ * Description: A simple SEO plugin to manage meta titles, descriptions, Open Graph fields, XML sitemaps, and redirects.
+ * Version: 1.1.0
  * Author: Fredrik Gustavsson, Jolix AB
  * License: GPL v2 or later
  */
@@ -19,13 +19,13 @@ if (defined('JOLIX_SEO_VERSION')) {
 }
 
 // Define plugin constants
-define('JOLIX_SEO_VERSION', '1.0.0');
+define('JOLIX_SEO_VERSION', '1.1.0');
 define('JOLIX_SEO_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('JOLIX_SEO_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Include required files only if classes don't exist
-if (!class_exists('JolixSEOMetaManager')) {
-    require_once JOLIX_SEO_PLUGIN_DIR . 'includes/class-jolix-seo-meta-manager.php';
+if (!class_exists('JolixSEO')) {
+    require_once JOLIX_SEO_PLUGIN_DIR . 'includes/class-jolix-seo.php';
 }
 if (!class_exists('JolixSEOMetaBox')) {
     require_once JOLIX_SEO_PLUGIN_DIR . 'includes/class-jolix-seo-meta-box.php';
@@ -45,10 +45,10 @@ if (!class_exists('JolixSEORedirects')) {
 
 // Initialize the plugin
 function jolix_seo_init() {
-    if (!class_exists('JolixSEOMetaManager')) {
+    if (!class_exists('JolixSEO')) {
         return;
     }
-    new JolixSEOMetaManager();
+    new JolixSEO();
 }
 add_action('plugins_loaded', 'jolix_seo_init');
 
@@ -56,8 +56,8 @@ add_action('plugins_loaded', 'jolix_seo_init');
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'jolix_seo_plugin_action_links');
 
 function jolix_seo_plugin_action_links($links) {
-    $settings_link = '<a href="' . admin_url('admin.php?page=jolix-seo-settings') . '">' . __('Settings', 'jolix-seo-meta-manager') . '</a>';
-    $redirects_link = '<a href="' . admin_url('tools.php?page=jolix-seo-redirects') . '">' . __('Redirects', 'jolix-seo-meta-manager') . '</a>';
+    $settings_link = '<a href="' . admin_url('admin.php?page=jolix-seo-settings') . '">' . __('Settings', 'jolix-seo') . '</a>';
+    $redirects_link = '<a href="' . admin_url('tools.php?page=jolix-seo-redirects') . '">' . __('Redirects', 'jolix-seo') . '</a>';
     
     array_unshift($links, $settings_link, $redirects_link);
     

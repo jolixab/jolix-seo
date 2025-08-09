@@ -3,7 +3,7 @@
 /**
  * Meta box template
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access

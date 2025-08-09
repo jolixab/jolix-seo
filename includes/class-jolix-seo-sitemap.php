@@ -3,7 +3,7 @@
 /**
  * XML Sitemap functionality
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
@@ -17,6 +17,15 @@ class JolixSEOSitemap
     public function __construct()
     {
         add_action('init', array($this, 'init_sitemap'));
+        
+        // Early hook to catch sitemap requests before WordPress fully loads
+        add_action('wp_loaded', array($this, 'early_sitemap_check'));
+        
+        // Generate physical sitemap when content changes
+        add_action('save_post', array($this, 'generate_physical_sitemap'));
+        add_action('delete_post', array($this, 'generate_physical_sitemap'));
+        add_action('wp_trash_post', array($this, 'generate_physical_sitemap'));
+        add_action('untrash_post', array($this, 'generate_physical_sitemap'));
     }
 
     public function init_sitemap()
@@ -68,8 +77,71 @@ class JolixSEOSitemap
 
     public function generate_sitemap()
     {
-        header('Content-Type: application/xml; charset=utf-8');
+        // Set headers for better Google compatibility
+        header('Content-Type: application/xml; charset=UTF-8');
+        header('X-Robots-Tag: noindex');
+        
+        // Prevent any output before sitemap
+        if (ob_get_length()) {
+            ob_clean();
+        }
 
+        $this->output_sitemap_content();
+    }
+    
+    /**
+     * Early sitemap check for better Google compatibility
+     */
+    public function early_sitemap_check()
+    {
+        if (!get_option('jolix_seo_enable_sitemap', 1)) {
+            return;
+        }
+        
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '';
+        
+        // Check various sitemap URL patterns
+        if (preg_match('/\/sitemap\.xml(\?.*)?$/', $request_uri)) {
+            $this->generate_sitemap();
+            exit;
+        }
+    }
+    
+    /**
+     * Generate a physical sitemap.xml file
+     */
+    public function generate_physical_sitemap()
+    {
+        if (!get_option('jolix_seo_enable_sitemap', 1)) {
+            return;
+        }
+        
+        // Get the sitemap content
+        ob_start();
+        $this->output_sitemap_content();
+        $sitemap_content = ob_get_clean();
+        
+        // Write to physical file
+        $upload_dir = wp_upload_dir();
+        $sitemap_path = trailingslashit($upload_dir['basedir']) . 'sitemap.xml';
+        
+        // Also create in root directory if writable
+        $root_sitemap = ABSPATH . 'sitemap.xml';
+        
+        // Write to uploads directory
+        file_put_contents($sitemap_path, $sitemap_content);
+        
+        // Try to write to root (may fail on some hosts)
+        if (is_writable(ABSPATH)) {
+            file_put_contents($root_sitemap, $sitemap_content);
+        }
+    }
+    
+    /**
+     * Output sitemap content without headers
+     */
+    private function output_sitemap_content()
+    {
         $post_types = get_option('jolix_seo_sitemap_post_types', array('post', 'page'));
 
         echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -109,6 +181,11 @@ class JolixSEOSitemap
                 // Double check exclusion (belt and suspenders approach)
                 $exclude_from_sitemap = get_post_meta($post->ID, '_seo_exclude_from_sitemap', true);
                 if ($exclude_from_sitemap) {
+                    continue;
+                }
+                
+                // Skip homepage to avoid duplicate entries
+                if (get_permalink($post->ID) === home_url('/')) {
                     continue;
                 }
 

@@ -1,9 +1,10 @@
-# Jolix SEO Meta Manager
+# Jolix SEO
 
-A simple and effective WordPress SEO plugin to manage meta titles, descriptions, and Open Graph fields with global suffix options.
+A simple and effective WordPress SEO plugin to manage meta titles, descriptions, Open Graph fields, XML sitemaps, and redirects with global suffix options.
 
 ## Features
 
+### SEO Meta Management
 - **Simple Interface** - Clean, intuitive meta box on post/page editor
 - **Combined Fields** - One title field for both SEO and social media (no duplicate work)
 - **Smart Image Handling** - Use featured image or custom image for Open Graph
@@ -12,10 +13,28 @@ A simple and effective WordPress SEO plugin to manage meta titles, descriptions,
 - **Smart Truncation** - Automatically truncate content to fit SEO best practices
 - **Complete Coverage** - Outputs SEO meta tags, Open Graph, and Twitter Cards
 
+### XML Sitemap
+- **Automatic Generation** - Dynamic XML sitemap at `/sitemap.xml`
+- **Post Type Selection** - Choose which content types to include
+- **Individual Control** - Exclude specific posts/pages from sitemap
+- **Backup Sitemap** - Physical backup file generation for reliability
+
+### Advanced Redirect Management
+- **Pattern Types** - Exact matches, wildcard patterns (* and ?), and full regex support
+- **Priority System** - High/Normal/Low priority levels with intelligent ordering
+- **Multiple Redirect Types** - Support for 301, 302, 307, and 308 redirects
+- **404 Handling** - Automatically intercepts 404 pages and checks for matching redirects
+- **Hit Tracking** - Records redirect usage statistics for monitoring
+- **Live Testing** - Built-in pattern testing tool in admin interface
+
+### WooCommerce Integration
+- **Product SEO** - Enhanced meta fields for WooCommerce products
+- **Product Images** - Smart handling of product gallery images for social sharing
+
 ## Installation
 
 1. Download or clone this repository
-2. Upload the `jolix-seo-meta-manager` folder to `/wp-content/plugins/`
+2. Upload the `jolix-seo` folder to `/wp-content/plugins/`
 3. Activate the plugin through the 'Plugins' screen in WordPress
 4. Go to Settings > Jolix SEO to configure global settings (optional)
 5. Edit any post or page to see the SEO meta box
@@ -23,8 +42,8 @@ A simple and effective WordPress SEO plugin to manage meta titles, descriptions,
 ## File Structure
 
 ```
-jolix-seo-meta-manager/
-├── jolix-seo-meta-manager.php  # Main plugin file
+jolix-seo/
+├── jolix-seo.php  # Main plugin file
 ├── readme.txt                  # WordPress.org readme
 ├── README.md                   # GitHub readme
 └── index.php                   # Security file
@@ -35,7 +54,7 @@ jolix-seo-meta-manager/
 ### Individual Posts/Pages
 
 1. Edit any post or page
-2. Scroll down to the "Jolix SEO Meta Manager" meta box
+2. Scroll down to the "Jolix SEO" meta box
 3. Fill in your custom meta title and description
 4. Choose between featured image or custom image for social media
 5. Watch the character counters for optimal length
@@ -45,7 +64,18 @@ jolix-seo-meta-manager/
 1. Go to **Settings > Jolix SEO** in WordPress admin
 2. Set optional suffixes for titles and descriptions
 3. Enable smart truncation to automatically fit within SEO limits
-4. Save settings - they'll apply to all posts and pages
+4. Configure XML sitemap settings and post type inclusion
+5. Save settings - they'll apply to all posts and pages
+
+### Redirect Management
+
+1. Go to **Tools > Redirects** in WordPress admin
+2. Add new redirects with pattern matching support:
+   - **Exact**: `/old-page` → `/new-page`
+   - **Wildcard**: `/blog/*` → `/news/*`
+   - **Regex**: `/product-(\d+)` → `/item/$1`
+3. Set priority levels and redirect types (301, 302, 307, 308)
+4. Monitor hit statistics and test patterns with the built-in testing tool
 
 ## What It Outputs
 

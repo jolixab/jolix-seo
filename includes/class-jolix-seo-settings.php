@@ -3,7 +3,7 @@
 /**
  * Settings page functionality
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
@@ -36,6 +36,15 @@ class JolixSEOSettings
 
             // Show success message
             add_action('admin_notices', array($this, 'flush_success_notice'));
+        }
+        
+        // Handle physical sitemap generation
+        if (isset($_GET['generate_physical_sitemap']) && sanitize_text_field(wp_unslash($_GET['generate_physical_sitemap'])) === '1' && 
+            isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'generate_physical_sitemap_nonce') && 
+            current_user_can('manage_options')) {
+            
+            $this->generate_physical_sitemap();
+            add_action('admin_notices', array($this, 'physical_sitemap_success_notice'));
         }
     }
 
@@ -86,6 +95,11 @@ class JolixSEOSettings
             foreach ($posts as $post) {
                 $exclude_from_sitemap = get_post_meta($post->ID, '_seo_exclude_from_sitemap', true);
                 if ($exclude_from_sitemap) {
+                    continue;
+                }
+                
+                // Skip homepage to avoid duplicate entries
+                if (get_permalink($post->ID) === home_url('/')) {
                     continue;
                 }
 
@@ -140,6 +154,19 @@ class JolixSEOSettings
     {
         echo '<div class="notice notice-success is-dismissible">';
         echo '<p>Sitemap URL refreshed! Try accessing your <a href="' . esc_url(home_url('/sitemap.xml')) . '" target="_blank">sitemap</a> now.</p>';
+        echo '</div>';
+    }
+    
+    public function physical_sitemap_success_notice()
+    {
+        $upload_dir = wp_upload_dir();
+        $sitemap_url = $upload_dir['baseurl'] . '/sitemap.xml';
+        
+        echo '<div class="notice notice-success is-dismissible">';
+        echo '<p>Physical sitemap generated successfully! You can access it at: <a href="' . esc_url($sitemap_url) . '" target="_blank">' . esc_url($sitemap_url) . '</a></p>';
+        if (file_exists(ABSPATH . 'sitemap.xml')) {
+            echo '<p>Also created at: <a href="' . esc_url(home_url('/sitemap.xml')) . '" target="_blank">' . esc_url(home_url('/sitemap.xml')) . '</a></p>';
+        }
         echo '</div>';
     }
 

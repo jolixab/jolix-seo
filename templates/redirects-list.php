@@ -2,7 +2,7 @@
 /**
  * Redirects list template
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
@@ -12,7 +12,8 @@ if (!defined('ABSPATH')) {
 ?>
 
 <div class="wrap">
-    <h1>Redirects Management 
+    <h1>
+        <span style="color: #0073aa;">Jolix SEO</span> - Redirects Management 
         <a href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=jolix-seo-redirects&action=add'), 'redirect_admin_nonce')); ?>" class="page-title-action">Add New</a>
     </h1>
 

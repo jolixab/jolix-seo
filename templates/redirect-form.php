@@ -2,7 +2,7 @@
 /**
  * Redirect form template (for both add and edit)
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
@@ -16,7 +16,7 @@ $form_action = $is_edit ? 'jolix_seo_update_redirect' : 'jolix_seo_add_redirect'
 ?>
 
 <div class="wrap">
-    <h1><?php echo esc_html($form_title); ?></h1>
+    <h1><span style="color: #0073aa;">Jolix SEO</span> - <?php echo esc_html($form_title); ?></h1>
     
     <a href="<?php echo esc_url(admin_url('admin.php?page=jolix-seo-redirects')); ?>" class="page-title-action">← Back to Redirects</a>
 

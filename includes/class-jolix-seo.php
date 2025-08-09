@@ -2,7 +2,7 @@
 /**
  * Main plugin class
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class JolixSEOMetaManager {
+class JolixSEO {
     
     private $meta_box;
     private $settings;

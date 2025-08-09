@@ -3,7 +3,7 @@
 /**
  * Settings page template
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
@@ -86,7 +86,11 @@ if (!defined('ABSPATH')) {
                     <p class="description">
                         <a href="<?php echo esc_url(home_url('/sitemap.xml')); ?>" target="_blank" class="button button-secondary">View Sitemap</a>
                         <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=jolix-seo-settings&flush_rewrite=1'), 'flush_rewrite_nonce')); ?>" class="button button-secondary">Refresh Sitemap URL</a>
+                        <a href="<?php echo esc_url(wp_nonce_url(admin_url('options-general.php?page=jolix-seo-settings&generate_physical_sitemap=1'), 'generate_physical_sitemap_nonce')); ?>" class="button button-primary">Generate Physical Sitemap</a>
                         <a href="<?php echo esc_url(wp_upload_dir()['baseurl'] . '/sitemap.xml'); ?>" target="_blank" class="button button-secondary">View Backup Sitemap</a>
+                    </p>
+                    <p class="description" style="margin-top: 5px; color: #666; font-style: italic;">
+                        If Google Search Console shows "Hämtning misslyckades" (fetch failed), try generating a physical sitemap file.
                     </p>
                     <?php if (get_option('jolix_seo_enable_sitemap', 1)): ?>
                         <p class="description">

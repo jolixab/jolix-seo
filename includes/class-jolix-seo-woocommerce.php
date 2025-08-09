@@ -2,7 +2,7 @@
 /**
  * WooCommerce integration
  * 
- * @package JolixSEOMetaManager
+ * @package JolixSEO
  */
 
 // Prevent direct access
